@@ -1,0 +1,145 @@
+//Didn't worked :1) issue with limit overflow upon addding total.
+//               2) in case answer is not minSpeedReq, tried to find value in the given array piles instead of any number between minSpeedReq and Max speed.
+/* Wrong Soln. Right Soln beneath commented code.
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int len = piles.length;
+        
+      /*  if(len==1){
+            return piles[0];
+        }*/
+        
+        if(len==h){
+            return max(piles,len);
+        }
+        
+        int total = 0;
+        for(int i=0; i< len; i++){
+            total+=piles[i];
+        }
+
+        int rem=total%h;
+        int minSpeedReq= (rem==0)? (total/h) : +(total/h)+1;
+        System.out.println("minSpeedReq: "+minSpeedReq+" total: "+total+" rem : "+rem);
+        Arrays.sort(piles);
+        
+        return (checkSpeed(minSpeedReq,piles,len,h))? minSpeedReq
+                            : findPile(minSpeedReq,piles,len,h);
+        
+    }
+    
+    private boolean checkSpeed(int speed, int[] piles, int len, int time){
+        
+        int hr =0;
+        
+        for(int i=0; i<len; i++){
+            if(piles[i]<=speed){
+                hr+=1;
+            }else{
+                int t =piles[i]/speed ;
+                hr+=(piles[i]%speed == 0) ? t : (t+1);
+            }
+            
+            if(hr>time){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private int findPile(int t, int[] piles, int len, int h){
+        int l=0;
+        int r= len-1;
+        while(l<r){
+            int m = ((r-l)/2)+l;
+
+            if(piles[m]<=t){
+                l=m+1;
+            }else{
+                r=m;
+            }
+        }
+        
+        System.out.println("piles[l] "+piles[l]);
+        
+        return (checkSpeed(piles[l],piles,len,h)) ? piles[l]
+                            : findPile(piles[l],piles,len,h);
+        
+    }
+    
+    private int max(int[] piles, int len){
+        int max = piles[0];
+        
+        for (int i=1; i<len; i++){
+            max= Math.max(max, piles[i]);
+        }
+        
+        return max;
+    }
+}
+*/
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int len = piles.length;
+        int maxSpeed = max(piles,len);
+        if(len==h){
+            return maxSpeed;
+        }
+        
+        long total = 0;
+        for(int i=0; i< len; i++){
+            total+=piles[i];
+        }
+
+        long rem=total%h;
+        long minSpeedReq= (rem==0)? (total/h) : +(total/h)+1;
+        
+        return (checkSpeed((int)minSpeedReq,piles,len,h))? (int)(minSpeedReq)
+                            : findPile( (int)minSpeedReq+1,maxSpeed,len,h,piles);
+        
+    }
+    
+    private boolean checkSpeed(int speed, int[] piles, int len, int time){
+        
+        int hr =0;
+        
+        for(int i=0; i<len; i++){
+            if(piles[i]<=speed){
+                hr+=1;
+            }else{
+                int t =piles[i]/speed ;
+                hr+=(piles[i]%speed == 0) ? t : (t+1);
+            }
+            
+            if(hr>time){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private int findPile(int l, int r, int len, int h, int[] piles){
+        while(l<r){
+            int m = ((r-l)/2)+l;
+            if(checkSpeed(m,piles,len,h)){
+                r=m;
+            }else{
+                l=m+1;
+            }
+        }
+                
+        return l;
+        
+    }
+    
+    private int max(int[] piles, int len){
+        int max = piles[0];
+        
+        for (int i=1; i<len; i++){
+            max= Math.max(max, piles[i]);
+        }
+        
+        return max;
+    }
+}
