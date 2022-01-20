@@ -1,5 +1,8 @@
+//https://leetcode.com/problems/koko-eating-bananas/
+
 //Didn't worked :1) issue with limit overflow upon addding total.
 //               2) in case answer is not minSpeedReq, tried to find value in the given array piles instead of any number between minSpeedReq and Max speed.
+// For better understanding of soln insight/intution : https://leetcode.com/problems/koko-eating-bananas/discuss/1703687/JavaC%2B%2B-A-very-very-well-detailed-explanation
 /* Wrong Soln. Right Soln beneath commented code.
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
